@@ -1,8 +1,8 @@
-/******************************************************/
-/** Name: Cyriac Domini Thundathil                    */
-/** Lab 1                                             */
-/*  Last Updated: 9/21/2015                           */
-/******************************************************/
+/****************************************************/
+/* Name: Cyriac Domini Thundathil                   */
+/* Lab 1                                            */
+/* Last Updated: 9/21/2015                          */
+/****************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -17,6 +17,7 @@ void multiply(){
 
 int main ()
 {
+  /*Set up counter variables */
   int r = 0, c = 0, n = 3;
   float matrix[3][3];
   for(r=0;r<n;r++){
