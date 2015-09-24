@@ -23,7 +23,7 @@ int main ()
   for(r=0;r<n;r++){
     for(c=0;c<n;c++){
       printf("Enter %i, %i: ", r,c );
-      scanf("%f",&matrix[r][c] );
+      scanf("%f",((float *)matrix + r*n+c));
     }
   }
   for(r=0;r<n;r++){
