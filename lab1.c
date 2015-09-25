@@ -26,7 +26,24 @@ void printarr(double *c, int n){
   }
   printf("]\n");
 }
-
+/*******************************************************/
+/* author: Cyriac Domini Thundathil
+/* solveMatrix: inputs: *m, *y, *x, n, type            */
+/* *m: pointer to the beginning of matrix that         */
+/*     contains coefficients.                          */
+/* *y: pointer to the beginning of array containing    */
+/*     y values                                        */
+/* *x: pointer to the beginning of array to be filled  */
+/*     with solutions to x1,x2,...,xn. These have to   */
+/*     be initialized to 0 (or 0.0).                   */
+/* n:  the dimension of the matrix m                   */
+/* type:the type of the values in matrix m.            */
+/*     'f' for floats                                  */
+/*     'i' for ints                                    */
+/*     's' for shorts                                  */
+/*     'l' for longs                                   */
+/*     'd' for double                                  */
+/*******************************************************/
 void solveMatrix(void *m, void *y, void *x, int n, char type){
   double* e1 = (double *)malloc(n*n*sizeof(double));
   double* e2 = (double *)malloc(n*n*sizeof(double));
