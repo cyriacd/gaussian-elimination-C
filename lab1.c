@@ -26,33 +26,19 @@ void printarr(double *c, int n){
   }
   printf("]\n");
 }
-void multiply (void *A, void *B, void *C, int size, int dim, char type){
-  //if type = 'i'
-  int i,j,k;
-  void *a, *b;
-  for (i=0;i<dim;i++){
-    for(j=0;j<dim;j++){
-      double sum = 0;
-      for(k=0;k<dim;k++){
-        a=((char*)A +(i*size*dim) + (k*size));
-        b=((char*)B +(k*size*dim) + (j*size));
-        sum=sum+(*(double*)a)*(*(double*)b);
-      }
-      *((double*)C +(i*dim) +j)=sum;
-    }
-  }
-}
 
-void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
+void solveMatrix(void *m, void *y, void *x, int n, char type){
   double* e1 = (double *)malloc(n*n*sizeof(double));
   double* e2 = (double *)malloc(n*n*sizeof(double));
   double* ans = (double *)malloc(n*n*sizeof(double));
   double* m2 = (double *)malloc(n*n*sizeof(double));
   double* y2 = (double *)malloc(n*sizeof(double));
   double* x2 = (double *)malloc(n*sizeof(double));
+  void *a, *b;
   double sum=0;
-  int i=0,c=0,r=0, j=0;
+  int i=0,c=0,r=0, j=0, k=0, im=0, jm=0, size, dsize = sizeof(double);
   if (type == 'i'){
+    size = sizeof(int);
     for(c=0;c<n;c++){
       for(r=0;r<n;r++){
         *(m2+r*n+c) = (double)(*(int*)((char*)m + (r*size*n) + (c*size)));
@@ -60,6 +46,7 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
       *(y2+c) = (double)(*(int*)((char*)(y + (c*size))));
     }
   }else if(type == 'f'){
+    size = sizeof(float);
     for(c=0;c<n;c++){
       for(r=0;r<n;r++){
         *(m2+r*n+c) = (double)(*(float*)((char*)m + (r*size*n) + (c*size)));
@@ -67,6 +54,7 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
       *(y2+c) = (double)(*(float*)((char*)(y + (c*size))));
     }
   }else if(type == 's'){
+    size = sizeof(short);
     for(c=0;c<n;c++){
       for(r=0;r<n;r++){
         *(m2+r*n+c) = (double)(*(short*)((char*)m + (r*size*n) + (c*size)));
@@ -74,6 +62,7 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
       *(y2+c) = (double)(*(short*)((char*)(y + (c*size))));
     }
   }else if(type == 'l'){
+    size = sizeof(long);
     for(c=0;c<n;c++){
       for(r=0;r<n;r++){
         *(m2+r*n+c) = (double)(*(long*)((char*)m + (r*size*n) + (c*size)));
@@ -81,6 +70,7 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
       *(y2+c) = (double)(*(long*)((char*)(y + (c*size))));
     }
   }else {
+    size = sizeof(double);
     for(c=0;c<n;c++){
       for(r=0;r<n;r++){
         *(m2+r*n+c) = (*(double*)((char*)m + (r*size*n) + (c*size)));
@@ -95,7 +85,18 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
   for (c=0;c<n;c++){
     *((double *)e1 + c*n+c) = 1/(*((double *)m2 + c*n+c));
     *(y2+c)=*(y2+c) * *((double *)e1 + c*n+c);
-    multiply(e1,m2,ans,sizeof(double),n,'f');
+    for (im=0;im<n;im++){
+      for(jm=0;jm<n;jm++){
+        double sum = 0;
+        for(k=0;k<n;k++){
+          a=((char*)e1 +(im*dsize*n) + (k*dsize));
+          b=((char*)m2 +(k*dsize*n) + (jm*dsize));
+          sum=sum+(*(double*)a)*(*(double*)b);
+        }
+        *((double*)ans +(im*n) +jm)=sum;
+      }
+    }
+    sum=0;
     m2=ans;
     for(r=c+1;r<n;r++){
       *((double *)e2 + r*n+c) = -1*(*((double *)m2 + r*n+c));
@@ -104,7 +105,18 @@ void solveMatrix(void *m, void *y, void *x, int n, int size, char type){
       }
       *(y2+r)=sum;
       sum = 0;
-      multiply(e2,m2,ans,sizeof(double),n,'f');
+      for (im=0;im<n;im++){
+        for(jm=0;jm<n;jm++){
+          double sum = 0;
+          for(k=0;k<n;k++){
+            a=((char*)e2 +(im*dsize*n) + (k*dsize));
+            b=((char*)m2 +(k*dsize*n) + (jm*dsize));
+            sum=sum+(*(double*)a)*(*(double*)b);
+          }
+          *((double*)ans +(im*n) +jm)=sum;
+        }
+      }
+      sum=0;
       m2=ans;
       *((double *)e2 + r*n+c) = 0;
     }
@@ -177,10 +189,10 @@ int main ()
       x[c]=0;
     }
   }
-  solveMatrix(&m1[0][0],&y[0],&x[0],n,sizeof(float),'f');
+  solveMatrix(&m1[0][0],&y[0],&x[0],n,'f');
   printf("\n[");
   for(i=0;i<n;i++){
-    printf("%.3f ", x[i] );
+    printf("%f ", x[i] );
   }
   printf("]\n");
 }
