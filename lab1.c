@@ -27,7 +27,9 @@ void printarr(double *c, int n){
   printf("]\n");
 }
 /*******************************************************/
-/* author: Cyriac Domini Thundathil
+/* author: Cyriac Domini Thundathil                    */
+/* CSE 2421 - Systems 1                                */
+/* Date: Friday, September 25, 2015                    */
 /* solveMatrix: inputs: *m, *y, *x, n, type            */
 /* *m: pointer to the beginning of matrix that         */
 /*     contains coefficients.                          */
@@ -172,12 +174,13 @@ void solveMatrix(void *m, void *y, void *x, int n, char type){
 int main ()
 {
   /*Set up counter variables */
-  int r = 0, c = 0, n = 4, i=0;
+  int r = 0, c = 0, n = 3, i=0;
 
-  float m1[4][4];
-  float x[4];
-  float mat[16]={2,5,-9,3,5,6,-4,2,3,-4,2,7,11,7,4,-8};
-  float y[4]={151,103,16,-32};
+  // float m1[4][4];
+  // float x[4];
+
+  // float mat[16]={2,5,-9,3,5,6,-4,2,3,-4,2,7,11,7,4,-8};
+  // float y[4]={151,103,16,-32};
 
   // long m1[3][3];
   // long x[3];
@@ -194,10 +197,10 @@ int main ()
   // int mat[9]={2,3,4,3,2,1,1,2,2};
   // int y[3]={29,16,16};
 
-  // double m1[3][3];
-  // double x[3];
-  // double mat[9]={2,3,4,3,2,1,1,2,2};
-  // double y[3]={29,16,16};
+  double m1[3][3];
+  double x[3];
+  double mat[9]={2,3,4,3,2,1,1,2,2};
+  double y[3]={29,16,16};
 
   for(r=0;r<n;r++){
     for(c=0;c<n;c++){
@@ -206,7 +209,7 @@ int main ()
       x[c]=0;
     }
   }
-  solveMatrix(&m1[0][0],&y[0],&x[0],n,'f');
+  solveMatrix(&m1[0][0],&y[0],&x[0],n,'d');
   printf("\n[");
   for(i=0;i<n;i++){
     printf("%f ", x[i] );
